@@ -23,4 +23,26 @@ angular.module('starter.services', [])
       return friends[friendId];
     }
   }
+})
+
+.factory('DeckOptions', function() {
+  // Might use a resource here that returns a JSON array
+
+  // Some fake testing data
+  var decks = [
+    { id: 0, name: 'HSK' },
+    { id: 1, name: 'Custom1' },
+    { id: 2, name: 'Custom2' },
+    { id: 3, name: 'Custom3' }
+  ];
+
+  return {
+    all: function() {
+      return decks;
+    }//,
+    // get: function(deckId) {
+    //   // Simple index lookup
+    //   return deck[deckId];
+    // }
+  }
 });
