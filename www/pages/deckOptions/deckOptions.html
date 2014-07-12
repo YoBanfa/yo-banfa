@@ -1,0 +1,12 @@
+<ion-view title="deckOptions">
+  <ion-content>
+  <div class="row">
+  	<h1>HELLO DECK WORLD</h1>
+  	<ion-list>
+      <ion-item ng-repeat="deck in decks" type="item-text-wrap" href="#/tab/deck/{{deck.id}}">
+        {{deck.name}}
+      </ion-item>
+    </ion-list>
+  </div>
+  </ion-content>
+</ion-view>
