@@ -29,7 +29,7 @@ gulp.task('sass', function(done) {
 
 
 gulp.task('minify', function(){
-  return gulp.src(['./www/js/*.js','./www/frontPage/*.js', './www/pages/**/*.js', '!./www/lib/**/*.js'])
+  return gulp.src(['./www/js/openfb.js', './www/js/app.js','./www/js/controllers.js','./www/js/services.js','./www/frontPage/*.js', './www/pages/**/*.js', '!./www/lib/**/*.js'])
     .pipe(concat('all.js'))
     .pipe(gulp.dest('./www/dist'))
     .pipe(rename('all.min.js'))
