@@ -1,7 +1,21 @@
 angular.module('starter.frontPage', [])
-.controller('FrontPageCtrl', function($scope, $state, $window, Auth) {
+.controller('FrontPageCtrl', function($scope, $state, $window, Auth, User) {
   //temporary fix for oauth not working
   $scope.user = {};
+
+  $scope.login = function(){
+    openFB.login('public_profile', function(){
+      // a little janky, but works for now
+      window.location.href = window.location.origin + '/#/friends';
+      User.userData();
+      $scope.loginMain();
+    },
+    function(err){
+      // maybe just throw this error?
+      console.log(err);
+    });
+  };
+
   $scope.signin = function (isValid) {
     // if( !isValid ) { return; }
     // Auth.signup($scope.user)
@@ -14,7 +28,7 @@ angular.module('starter.frontPage', [])
     //   });
     console.log('signin!!!');
   };
-  
+
   $scope.something = function(){
     console.log('something!!!');
   };
