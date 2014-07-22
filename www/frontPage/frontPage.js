@@ -1,7 +1,27 @@
 angular.module('starter.frontPage', [])
-.controller('FrontPageCtrl', function($scope, $state, $window, Auth) {
+.controller('FrontPageCtrl', function($scope, $state, $window, Auth, User) {
   //temporary fix for oauth not working
   $scope.user = {};
+
+  $scope.login = function(){
+    openFB.login(function(response) {
+      if(response.status === 'connected') {
+        openFB.api({path: '/me', success: function(data){
+          window.localStorage.setItem('FBuserID', data.id);
+          window.localStorage.setItem('FBuserName', data.name);
+          window.localStorage.setItem('FBuserLocale', data.locale);
+          console.log(data);
+          $state.go('friends');
+        }, error: function(err) {console.log(err);}});
+      } else {
+        alert('Facebook login failed: ' + response.error);
+      }
+    }, {scope: 'email, user_friends'});
+
+
+
+  };
+
   $scope.signin = function (isValid) {
     // if( !isValid ) { return; }
     // Auth.signup($scope.user)
@@ -14,7 +34,7 @@ angular.module('starter.frontPage', [])
     //   });
     console.log('signin!!!');
   };
-  
+
   $scope.something = function(){
     console.log('something!!!');
   };

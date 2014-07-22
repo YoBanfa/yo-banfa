@@ -48,7 +48,7 @@ angular.module('starter.services', [])
   ];
 
   //return entire list of friends
-  var getFriends = function(user){ 
+  var getFriends = function(user){
     //returns results of ajax get request to api/links
     return $http({
       method: 'GET',
@@ -57,7 +57,7 @@ angular.module('starter.services', [])
   };
 
   //return all games which the user did not create
-  var getChallenges = function(user){ 
+  var getChallenges = function(user){
     return $http({
       method: 'GET',
       url: '/api/users/' + user + '/challenges'
@@ -95,7 +95,7 @@ angular.module('starter.services', [])
     })
   };
 
-  //update game should return the scores.  It should also destroy 
+  //update game should return the scores.  It should also destroy
   //or mark the game as complete on the server side
   var update = function(game, data){
     return $http({
@@ -173,4 +173,26 @@ angular.module('starter.services', [])
     signup: signup,
     signout: signout
   };
+})
+.factory('User', function(){
+  // handles user login
+  var userData = function(){
+    openFB.api({
+      path: '/me',
+      params: {fields: 'id, name'},
+      success: function(user) {
+        // stores user/id in scope for client access
+        window.sessionStorage['fbid'] = user.id;
+        window.sessionStorage['name'] = user.name;
+      },
+      error: function(error) {
+        console.log(error);
+        console.log('Facebook error: ' + error.error_description);
+      }
+    });
+  };
+  return {
+    userData: userData
+  };
+
 });
