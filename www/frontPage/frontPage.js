@@ -7,13 +7,14 @@ angular.module('starter.frontPage', [])
     openFB.login(function(response) {
       if(response.status === 'connected') {
         alert('Facebook login succeeded, got access token: ' + response.authResponse.token);
+        openFB.api({path: '/me/friends', success: function(data){console.log(data);}, error: function(err) {console.log(err);}});
       } else {
         alert('Facebook login failed: ' + response.error);
       }
-    }, {scope: 'email,read_stream,publish_stream'});
+    }, {scope: 'email, user_friends'});
 
 
-    openFB.api({path: '/me/friends', success: function(data){console.log(data);}, error: function(err) {console.log(err);}});
+
   };
 
   $scope.signin = function (isValid) {
