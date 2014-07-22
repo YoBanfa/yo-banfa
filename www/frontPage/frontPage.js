@@ -4,16 +4,16 @@ angular.module('starter.frontPage', [])
   $scope.user = {};
 
   $scope.login = function(){
-    openFB.login('public_profile', function(){
-      // a little janky, but works for now
-      window.location.href = window.location.origin + '/#/friends';
-      User.userData();
-      $scope.loginMain();
-    },
-    function(err){
-      // maybe just throw this error?
-      console.log(err);
-    });
+    openFB.login(function(response) {
+      if(response.status === 'connected') {
+        alert('Facebook login succeeded, got access token: ' + response.authResponse.token);
+      } else {
+        alert('Facebook login failed: ' + response.error);
+      }
+    }, {scope: 'email,read_stream,publish_stream'});
+
+
+    openFB.api({path: '/me/friends', success: function(data){console.log(data);}, error: function(err) {console.log(err);}});
   };
 
   $scope.signin = function (isValid) {
