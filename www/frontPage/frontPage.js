@@ -6,13 +6,12 @@ angular.module('starter.frontPage', [])
   $scope.login = function(){
     openFB.login(function(response) {
       if(response.status === 'connected') {
-        alert('Facebook login succeeded, got access token: ' + response.authResponse.token);
-        openFB.api({path: '/me/friends', success: function(data){console.log(data);}, error: function(err) {console.log(err);}});
         openFB.api({path: '/me', success: function(data){
           window.localStorage.setItem('FBuserID', data.id);
           window.localStorage.setItem('FBuserName', data.name);
-          // window.localStorage.setItem('FBuserLocale', data.locale);
+          window.localStorage.setItem('FBuserLocale', data.locale);
           console.log(data);
+          $state.go('friends');
         }, error: function(err) {console.log(err);}});
       } else {
         alert('Facebook login failed: ' + response.error);

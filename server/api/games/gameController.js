@@ -3,7 +3,7 @@ var Game = require('./gameModel.js'),
     Card = require('../card/card.model.js')
 
 module.exports = {
-  //Add Game to database.  Shuffle deck.  
+  //Add Game to database.  Shuffle deck.
   //note: duplicate found in csv.  note: some traditional chars missing
   create: function (req, res) {
     var newDeck = []
@@ -18,20 +18,30 @@ module.exports = {
         newDeck.push(allCards[rng])
         allCards.splice(rng, 1);
       }
-      //Game creation parameters - remove quotes when ready
+      //Game creation parameters
       var newGame = {
         creator: req.body.creator,
-        challenged: "req.body.challenged",
+        challenged: req.body.challenged,
         deck: newDeck
       }
       //Create game
       Game.create(newGame, function(err, game){
         if (err){ console.log(err); }
-        var conditions = { facebookId: req.body.facebookId };
+        var conditions = { facebookId: req.body.creator };
         var update = { $push: { currentGames: game._id } };
         //Add game to user's list of currentGames
         User.update(conditions, update, function(err, numupdated){
-          if (err){ console.log(err);} 
+          if (err){ console.log(err);}
+          User.findOne(conditions, function (err, user) {
+            if(err) { console.log(err); }
+          }).populate('currentGames').exec(function(err, user){
+            if(err) { console.log(err); }
+          })
+        });
+
+        var conditions = { facebookId: req.body.challenged };
+        User.update(conditions, update, function(err, numupdated){
+          if (err){ console.log(err);}
           User.findOne(conditions, function (err, user) {
             if(err) { console.log(err); }
           }).populate('currentGames').exec(function(err, user){
@@ -63,7 +73,7 @@ module.exports = {
     var update = {};
     update[scoreToUpdate] = req.body.lastScore
     Game.update(conditions, update, function(err, numupdated){
-      if (err){ console.log(err);} 
+      if (err){ console.log(err);}
       Game.findOne(conditions, function (err, game) {
         if(err) { console.log(err); }
         if (game.creatorScore > -1 && game.challengedScore > -1){

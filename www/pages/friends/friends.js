@@ -15,20 +15,28 @@ angular.module('starter.friends', [])
     Auth.signin({facebookId: facebookId, username: $scope.data.user, image: facebookPic})
     .then(function(resp){
       //Get friends
-      $scope.getFriends(facebookId).then(function(resp){
+/*      $scope.getFriends(facebookId).then(function(resp){
         $scope.data.friends = resp.data;
-      });
+      });*/
+      openFB.api({path: '/me/friends', success: function(data){
+        $scope.data.friends = data.data;
+        console.log(data.data);
+        //naive fix to populate users
+        //unknown error, friend page wouldn't fully populate
+        $state.go('friends');
+      }, error: function(err) {console.log(err);}});
     });
   }
 
 
-  $scope.toGame = function() {
+
+  $scope.toGame = function(friend) {
     //Disable make game button
     $scope.chosen = true;
 
     //Make game
     var creator = localStorage.getItem('FBuserID') || "default";
-    var conditions = {creator: creator, challenged: 'you'};
+    var conditions = {creator: creator, challenged: friend};
     $scope.makeGame(conditions).then(function(resp){
       console.log(resp.data);
       //Save game id
