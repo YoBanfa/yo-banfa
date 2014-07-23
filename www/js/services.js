@@ -6,7 +6,7 @@ angular.module('starter.services', [])
  .factory('MenuService', function() {
 
   var menuItems = [
-    { text: 'Home', iconClass: 'icon ion-map', link: 'frontPage'},
+    { text: 'Home', iconClass: 'icon ion-map', link: 'friends'},
     { text: 'Friends', iconClass: 'icon ion-map', link: 'friends'},
     { text: 'Options', iconClass: 'icon ion-map', link: 'hanziOptions'}
   ];
