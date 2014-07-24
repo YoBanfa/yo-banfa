@@ -1,7 +1,7 @@
 angular.module('starter.friends', [])
 
 //The controller for the friends page.
-.controller('FriendsCtrl', function($scope, $state, $window, Friends, Game, LS, Auth) {
+.controller('FriendsCtrl', function($scope, $state, $window, Friends, Game, LS, Auth, User) {
   $scope.getFriends = Friends.getFriends;
   $scope.makeGame = Game.makeGame;
   $scope.data = {};
@@ -19,8 +19,15 @@ angular.module('starter.friends', [])
         $scope.data.friends = resp.data;
       });*/
       openFB.api({path: '/me/friends', success: function(data){
-        $scope.data.friends = data.data;
-        console.log(data.data);
+        $scope.data.friends = [];
+
+        for(var i = 0; i < data.data.length; i++) {
+          var thisFriend = data.data[i];
+          User.userInfo(thisFriend.id)
+          .then(function(friendData) {
+            $scope.data.friends.push(friendData)
+          })
+        }
         //naive fix to populate users
         //unknown error, friend page wouldn't fully populate
         $state.go('friends');

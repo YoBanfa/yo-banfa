@@ -21,7 +21,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
+
+  
+  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file):/);
+  $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file):/);
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -65,6 +69,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       url: '/deckOptions',
       templateUrl: 'pages/deckOptions/deckOptions.html',
       controller: 'DeckOptionsCtrl'
+    })
+
+    .state('logout', {
+      url: '/logout',
+      controller: 'LogoutCtrl'
     })
 
 
