@@ -29,8 +29,13 @@ angular.module('starter.friends', [])
               })
             }
             $state.go('friends');
-          }, 
-          error: function(err) {console.log(err);}
+          },
+          error: function(err) {
+            window.localStorage.clear();
+            window.sessionStorage.clear();
+            $state.go('frontPage');
+            console.log(err);
+          }
         });
       });
     }
