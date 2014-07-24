@@ -138,7 +138,7 @@ angular.module('starter.services', [])
   }
 })
 
-.factory('Auth', function ($http, $location, $window) {
+.factory('Auth', function ($http, $state, $window) {
   //authorization is currently nonfunctional
   var signin = function (userinfo) {
     return $http({
@@ -151,8 +151,19 @@ angular.module('starter.services', [])
     });
   };
 
+  var checkLoginStatus = function (callback) {
+    openFB.getLoginStatus(function(resp) {
+      if (resp.status === "connected") {
+        callback();
+      } else {
+        $state.go('frontPage');
+      }
+    })
+  };
+
   return {
     signin: signin,
+    checkLoginStatus: checkLoginStatus
   };
 })
 
