@@ -1,6 +1,8 @@
 var User = require('./userModel'),
     Q    = require('q'),
-    jwt  = require('jwt-simple');
+    jwt  = require('jwt-simple'),
+    ObjectId = require('mongoose').Types.ObjectId,
+    Game = require('../games/gameModel.js'  );
 
 module.exports = {
   //Add user to database
@@ -44,7 +46,7 @@ module.exports = {
     var conditions = { facebookId: req.body.facebookId };
     var update = { $push: { games: req.params.game } };
     User.update(conditions, update, function(err, numupdated){
-      if (err){ console.log(err);} 
+      if (err){ console.log(err);}
       User.findOne(conditions, function (err, user) {
         if(err) { console.log(err); }
         res.json(user)
@@ -70,8 +72,20 @@ module.exports = {
   },
 
   getChallenges: function(req, res) {
-    //after signin, 
+    //after signin,
     //  check challenges
+    User.findOne({ facebookId: req.params.userID }, function(err, user) {
+      if (err) { console.log(err); }
+      if (!user) { return res.send(404); }
+      Q.all(user.currentGames.map(function(gameID){
+        var deferred = Q.defer();
+        Game.findOne({ _id: new ObjectId(gameID) }, deferred.makeNodeResolver());
+        return deferred.promise;
+      }))
+      .then(function(games){
+        res.json(games);
+      });
+    });
   },
 
   //Check whether user is authorized

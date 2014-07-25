@@ -58,8 +58,12 @@ angular.module('starter.game', [])
   		//Store result on localStorage and update database
       //Creator will default to true because the oauth and user data structures are 
       //not yet complete
+      var creator = $scope.data.game.creator === $window.localStorage.getItem('FBuserID');
   		$window.localStorage.setItem('lastScore', $scope.gameStatus.numCorrect);
-      Game.update($scope.data.gameId, {lastScore: $scope.gameStatus.numCorrect, creator: true})
+      Game.update($scope.data.gameId, {
+        lastScore: $scope.gameStatus.numCorrect, 
+        creator: creator
+      })
       .then(function(resp){
         console.log("Update response:")
         console.log(resp)

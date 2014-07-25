@@ -61,6 +61,9 @@ angular.module('starter.services', [])
     return $http({
       method: 'GET',
       url: '/api/users/' + user + '/challenges'
+    })
+    .then(function(resp){
+      return resp.data;
     });
   };
 
@@ -99,7 +102,7 @@ angular.module('starter.services', [])
   //or mark the game as complete on the server side
   var update = function(game, data){
     return $http({
-      method: 'PUT',
+      method: 'POST',
       data: data,
       url: '/api/games/' + game + '/updatescore'
     })
@@ -147,7 +150,7 @@ angular.module('starter.services', [])
       data: userinfo
     })
     .then(function (resp) {
-      return resp.data.token;
+      return resp.data;
     });
   };
 
