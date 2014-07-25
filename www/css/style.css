@@ -12,7 +12,7 @@
   line-height: 1.5em;
 }
 .opaque{
- opacity: 0.8; 
+ opacity: 0.8;
 }
 .buttonFont{
   font-size: 25px;
@@ -65,4 +65,12 @@
 
 .scroll-content{
   background-image: url('./../img/congruentPentagon.png');
+}
+
+.logoImage {
+  padding: 10px;
+}
+
+.fb-button {
+  background: fblog.png
 }
