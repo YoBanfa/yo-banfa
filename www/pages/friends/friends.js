@@ -46,7 +46,8 @@ angular.module('starter.friends', [])
 
       //Make game
       var creator = localStorage.getItem('FBuserID') || "default";
-      var conditions = {creator: creator, challenged: friend};
+      var conditions = {creator: creator, challenged: friend.facebookId};
+      console.log('conditions', conditions)
       $scope.makeGame(conditions).then(function(resp){
         console.log(resp.data);
         //Save game id
