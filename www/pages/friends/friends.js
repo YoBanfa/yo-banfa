@@ -7,16 +7,28 @@ angular.module('starter.friends', [])
     $scope.getFriends = Friends.getFriends;
     $scope.makeGame = Game.makeGame;
     $scope.data = {};
+    $scope.buttonText = {
+      start: "Start Game",
+      challenged: "Waiting for opponent",
+      creator: "Accept Challenge"
+    };
 
     var facebookId = localStorage.getItem('FBuserID');
     var facebookPic = localStorage.getItem('FBuserPic');
     $scope.data.user = localStorage.getItem('FBuserName') || "";
+
 
     if (facebookId === "undefined" || $scope.data.user === "undefined"){
       console.log("undefined user");
     } else {
       Auth.signin({facebookId: facebookId, username: $scope.data.user, image: facebookPic})
       .then(function(resp){
+        return Friends.getChallenges(resp.facebookId);
+      })
+      .then(function(games){
+        
+        console.log(games);
+
 
         openFB.api({
           path: '/me/friends',
@@ -26,6 +38,18 @@ angular.module('starter.friends', [])
               var thisFriend = data.data[i];
               User.userInfo(thisFriend.id)
               .then( function(friendData) {
+                console.log(friendData);
+                friendData.status = "start";
+                for (var j = 0; j < games.length; j++){
+                  if (games[j].challenged === friendData.facebookId) {
+                    friendData.status = "challenged";
+                    break;
+                  }
+                  if (games[j].creator === friendData.facebookId){
+                    friendData.status = "creator";
+                    break;
+                  }
+                }
                 $scope.data.friends.push(friendData)
               })
             }
