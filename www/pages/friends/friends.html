@@ -29,7 +29,7 @@
         </div>
      	  <div class="col col-30">
           <i class="icon ion-loading-c" ng-if="chosen"></i>
-          <button class="button button-block button-calm" ng-if="!chosen" ng-click="toGame(friend)">
+          <button class="button button-block button-calm" ng-if="!chosen" ng-click="toGame(friend)" ng-disabled="friend.status === 'challenged'">
             {{ buttonText[friend.status] }}
           </button>
         </div>

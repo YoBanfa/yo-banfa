@@ -38,15 +38,16 @@ angular.module('starter.friends', [])
               var thisFriend = data.data[i];
               User.userInfo(thisFriend.id)
               .then( function(friendData) {
-                console.log(friendData);
                 friendData.status = "start";
                 for (var j = 0; j < games.length; j++){
                   if (games[j].challenged === friendData.facebookId) {
                     friendData.status = "challenged";
+                    friendData.game = games[j];
                     break;
                   }
                   if (games[j].creator === friendData.facebookId){
                     friendData.status = "creator";
+                    friendData.game = games[j];
                     break;
                   }
                 }
@@ -70,22 +71,27 @@ angular.module('starter.friends', [])
       $scope.chosen = true;
 
       //Make game
-      var creator = localStorage.getItem('FBuserID') || "default";
-      var conditions = {creator: creator, challenged: friend.facebookId};
-      console.log('conditions', conditions)
-      $scope.makeGame(conditions).then(function(resp){
-        console.log(resp.data);
-        //Save game id
-        $window.localStorage.setItem('currentGame', resp.data._id);
-        // Get hanziOptions from local storage
-        var hanziOptions = LS.getData();
-        // if they exist, route to deck, else to hanzi
-        if (hanziOptions) {
-          $state.go('deckOptions');
-        } else {
-          $state.go('hanziOptions');
-        }
-      });
+      if (friend.status === "start") {
+        var creator = localStorage.getItem('FBuserID') || "default";
+        var conditions = {creator: creator, challenged: friend.facebookId};
+        //console.log('conditions', conditions)
+        $scope.makeGame(conditions).then(function(resp){
+          console.log(resp.data);
+          //Save game id
+          $window.localStorage.setItem('currentGame', resp.data._id);
+          // Get hanziOptions from local storage
+          var hanziOptions = LS.getData();
+          // if they exist, route to deck, else to hanzi
+          if (hanziOptions) {
+            $state.go('deckOptions');
+          } else {
+            $state.go('hanziOptions');
+          }
+        });
+      } else {
+        $window.localStorage.setItem('currentGame', friend.game._id);
+        $state.go('game');
+      }
     };
   });
 
