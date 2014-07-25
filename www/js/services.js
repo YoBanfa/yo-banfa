@@ -61,6 +61,9 @@ angular.module('starter.services', [])
     return $http({
       method: 'GET',
       url: '/api/users/' + user + '/challenges'
+    })
+    .then(function(resp){
+      return resp.data;
     });
   };
 
@@ -147,7 +150,7 @@ angular.module('starter.services', [])
       data: userinfo
     })
     .then(function (resp) {
-      return resp.data.token;
+      return resp.data;
     });
   };
 

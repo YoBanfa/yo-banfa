@@ -12,11 +12,20 @@ angular.module('starter.friends', [])
     var facebookPic = localStorage.getItem('FBuserPic');
     $scope.data.user = localStorage.getItem('FBuserName') || "";
 
+    Friends.getChallenges(facebookId)
+    .then(function(games){
+      console.log(games);
+    })
+    .catch(function(e){
+      console.log(e);
+    });
+
     if (facebookId === "undefined" || $scope.data.user === "undefined"){
       console.log("undefined user");
     } else {
       Auth.signin({facebookId: facebookId, username: $scope.data.user, image: facebookPic})
       .then(function(resp){
+
         openFB.api({
           path: '/me/friends',
           success: function(data){
