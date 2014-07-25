@@ -78,7 +78,17 @@ module.exports = {
         if(err) { console.log(err); }
         if (game.creatorScore > -1 && game.challengedScore > -1){
           Game.update(conditions, {complete: true}, function(err, numupdated){
-            if (err){ console.log(err);}
+            if (err){ console.log(err); }
+            User.findOne({ facebookId: game.creator }, function(err, user){
+              var index = user.currentGames.indexOf(game._id);
+              user.currentGames.splice(index, 1);
+              user.save(function(err){ err && console.log(err); });
+            });
+            User.findOne({ facebookId: game.challenged }, function(err, user){
+              var index = user.currentGames.indexOf(game._id);
+              user.currentGames.splice(index, 1);
+              user.save(function(err) { err && console.log(err); });
+            });
             res.json(game);
           });
         } else {
