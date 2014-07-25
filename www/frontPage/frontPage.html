@@ -1,35 +1,15 @@
 <ion-view title="frontPage" hide-nav-bar="true">
-  <ion-content has-header="false">
-    <div class="yologo">
-      <div class="center">
-        YO! BANFA
+  <ion-header-bar align-title = "center"  class = "bar bar-header bar-light">
+    <h1 class = "title">Yo! Banfa</h1>
+  </ion-header-bar>
+  <ion-content>
+    <div class="center">
+      <div class = "image row">
+        <img src="./../img/LB.png" class = "logoImage" height="200px" width="200px" ui-sref="friends">
+      </div>
+      <div class="image row center">
+        <button class="button button-positive center" ng-click="login()">Login with Facebook</button>
       </div>
     </div>
-    <div class="row yologo">
-      <img src="./../img/LB.png" height="200px" width="200px" ui-sref="friends">
-    </div>
-    <div class="row">
-      <button class="button button-block button-positive" ng-click="login()">Login with Facebook</button>
-    </div>
-
-    <!-- while oauth doesnt work -->
-<!--     <div id='signin'>
-      <h1>signin</h1>
-      <form name="signinForm" ng-submit='signin(signinForm.$valid)' novalidate>
-        <input type='text' name='userInput' ng-model='user.username' ng-minlength='3' ng-maxlength='20' required>
-        <input type="text" ng-model='user.friends' required>
-        <p ng-show='signinForm.$invalid'>Username and Password must be valid</p>
-        <p ng-if='signinForm.userInput.$error=true'>User</p>
-        <button ng-disabled='signinForm.$invalid'>signin</button>
-      </form>
-    </div> -->
-
-    <!-- oauth -->
-<!--     <div class="fblogin">
-      <fb:login-button scope="public_profile,email,user_friends" data-auto-logout-link="true" ng-controller="FrontPageCtrl" onlogin="checkLoginState(); something();">
-      </fb:login-button>
-      <div id="status">
-      </div> -->
-
   </ion-content>
 </ion-view>
