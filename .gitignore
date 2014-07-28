@@ -40,5 +40,5 @@ Thumbs.db
 node_modules/
 config.xml
 #dist
-#www/lib
+www/lib
 
