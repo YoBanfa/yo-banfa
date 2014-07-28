@@ -6,11 +6,11 @@ angular.module('starter.services', [])
  .factory('MenuService', function() {
 
   var menuItems = [
-    { text: 'Home', iconClass: 'icon ion-map', link: 'frontPage'},
+    { text: 'Home', iconClass: 'icon ion-map', link: 'friends'},
     { text: 'Friends', iconClass: 'icon ion-map', link: 'friends'},
-    { text: 'Options', iconClass: 'icon ion-map', link: 'hanziOptions'}
+    { text: 'Options', iconClass: 'icon ion-map', link: 'hanziOptions'},
+    { text: 'Logout', iconClass: 'icon ion-map', link: 'logout'}
   ];
-
 
   return {
     all: function() {
@@ -61,6 +61,9 @@ angular.module('starter.services', [])
     return $http({
       method: 'GET',
       url: '/api/users/' + user + '/challenges'
+    })
+    .then(function(resp){
+      return resp.data;
     });
   };
 
@@ -99,7 +102,7 @@ angular.module('starter.services', [])
   //or mark the game as complete on the server side
   var update = function(game, data){
     return $http({
-      method: 'PUT',
+      method: 'POST',
       data: data,
       url: '/api/games/' + game + '/updatescore'
     })
@@ -138,7 +141,7 @@ angular.module('starter.services', [])
   }
 })
 
-.factory('Auth', function ($http, $location, $window) {
+.factory('Auth', function ($http, $state, $window) {
   //authorization is currently nonfunctional
   var signin = function (userinfo) {
     return $http({
@@ -147,52 +150,39 @@ angular.module('starter.services', [])
       data: userinfo
     })
     .then(function (resp) {
-      return resp.data.token;
+      return resp.data;
     });
   };
 
-  var signup = function (userinfo) {
-    return $http({
-      method: 'POST',
-      url: '/api/users/signup',
-      data: userinfo
+  var checkLoginStatus = function (callback) {
+    openFB.getLoginStatus(function(resp) {
+      if (resp.status === "connected") {
+        callback();
+      } else {
+        $state.go('frontPage');
+      }
     })
-    .then(function (resp) {
-      return resp.data.token;
-    });
   };
-
-  var signout = function () {
-    $window.localStorage.removeItem('com.shortly');
-    $location.path('/signin');
-  };
-
 
   return {
     signin: signin,
-    signup: signup,
-    signout: signout
+    checkLoginStatus: checkLoginStatus
   };
 })
-.factory('User', function(){
-  // handles user login
-  var userData = function(){
-    openFB.api({
-      path: '/me',
-      params: {fields: 'id, name'},
-      success: function(user) {
-        // stores user/id in scope for client access
-        window.sessionStorage['fbid'] = user.id;
-        window.sessionStorage['name'] = user.name;
-      },
-      error: function(error) {
-        console.log(error);
-        console.log('Facebook error: ' + error.error_description);
-      }
+
+.factory('User', function ($http){
+
+  var userInfo = function(userID) {
+    return $http({
+      method: 'GET',
+      url: '/api/users/' + userID,
+    }).then(function(resp) {
+      return resp.data;
     });
   };
+
   return {
-    userData: userData
+    userInfo: userInfo
   };
 
 });

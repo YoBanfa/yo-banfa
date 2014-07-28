@@ -7,6 +7,6 @@ module.exports = function (app) {
   app.post('/creategame', gameController.create);
   app.get('/:game/getgame', gameController.load)
   //app.get('/:game/getscores', gameController.getScores)
-  app.put('/:game/updatescore', gameController.update);
+  app.post('/:game/updatescore', gameController.update);
   //app.delete('/:game/removegame', gameController.destroy);
 };

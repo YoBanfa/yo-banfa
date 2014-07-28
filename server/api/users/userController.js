@@ -1,6 +1,8 @@
 var User = require('./userModel'),
     Q    = require('q'),
-    jwt  = require('jwt-simple');
+    jwt  = require('jwt-simple'),
+    ObjectId = require('mongoose').Types.ObjectId,
+    Game = require('../games/gameModel.js'  );
 
 module.exports = {
   //Add user to database
@@ -17,13 +19,21 @@ module.exports = {
     User.findOne({facebookId: req.body.facebookId}, function(err, user){
       if(err) { console.log(err) }
       if(!user){
-        var conditions = {facebookId: req.body.facebookId, username: req.body.username, friends: ["Marie Curie"]}
+        var conditions = {facebookId: req.body.facebookId, userName: req.body.username, image: req.body.image, friends: ["Marie Curie"]}
         User.create(conditions, function(err, user) {
           if(err) { console.log(err) }
           res.json(201, user);
         });
       } else {
-        res.json(user)
+        user.image = req.body.image;
+        user.userName = req.body.username;
+        user.save(function(err, saved) {
+          if (err) {
+            console.log(err);
+          } else {
+            res.json(saved);
+          }
+        })
       }
     })
 
@@ -36,7 +46,7 @@ module.exports = {
     var conditions = { facebookId: req.body.facebookId };
     var update = { $push: { games: req.params.game } };
     User.update(conditions, update, function(err, numupdated){
-      if (err){ console.log(err);} 
+      if (err){ console.log(err);}
       User.findOne(conditions, function (err, user) {
         if(err) { console.log(err); }
         res.json(user)
@@ -44,9 +54,17 @@ module.exports = {
     });
   },
 
+  getInfo: function(req, res) {
+    User.findOne({facebookId: req.params.userID}, function (err, user) {
+      if(err) { console.log(err); }
+      if(!user) { return res.send(404); }
+      res.json(user);
+    });
+  },
+
   //Get list of all user's friends
   getFriends: function(req, res) {
-    User.findOne({facebookId: req.params.username}, function (err, user) {
+    User.findOne({facebookId: req.params.userID}, function (err, user) {
       if(err) { console.log(err); }
       if(!user) { return res.send(404); }
         res.json(user.friends);
@@ -54,8 +72,20 @@ module.exports = {
   },
 
   getChallenges: function(req, res) {
-    //after signin, 
+    //after signin,
     //  check challenges
+    User.findOne({ facebookId: req.params.userID }, function(err, user) {
+      if (err) { console.log(err); }
+      if (!user) { return res.send(404); }
+      Q.all(user.currentGames.map(function(gameID){
+        var deferred = Q.defer();
+        Game.findOne({ _id: new ObjectId(gameID) }, deferred.makeNodeResolver());
+        return deferred.promise;
+      }))
+      .then(function(games){
+        res.json(games);
+      });
+    });
   },
 
   //Check whether user is authorized

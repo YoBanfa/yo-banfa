@@ -6,8 +6,9 @@ module.exports = function (app) {
 
   //app.post('/signup', userController.signup);
   app.post('/signin', userController.signin);
-  app.get('/:username/friendslist', userController.getFriends);
-  //app.get('/:username/challenges', userController.getChallenges);
-  app.get('/:username/facebookId', userController.getFriends);
+  app.get('/:userID/friendslist', userController.getFriends);
+  app.get('/:userID/challenges', userController.getChallenges);
+  app.get('/:userID/facebookId', userController.getFriends);
+  app.get('/:userID', userController.getInfo)
 
 };
