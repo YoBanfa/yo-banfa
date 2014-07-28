@@ -11,7 +11,7 @@ app.use(passport.initialize());
 passport.use(new FacebookStrategy({
     clientID: 648798351882921,
     clientSecret: "fd19734e0be95df8f41499bbe345406e",
-    callbackURL: "http://www.example.com/auth/facebook/callback"
+    callbackURL: "http://yo-banfa.herokuapp.com/#/"
   },
   function(accessToken, refreshToken, profile, done) {
     User.findOrCreate(user.finduser(), function(err, user) {
