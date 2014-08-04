@@ -14,6 +14,12 @@ var paths = {
 };
 
 gulp.task('default', ['sass', 'minify', 'watch']);
+gulp.task('build', ['sass','minify','watch','install'],
+  function(){
+    process.nextTick(function(){
+      process.exit(0);
+    });
+  });
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
