@@ -6,6 +6,10 @@
     "node": "0.10.x",
     "npm": "1.2.x"
     },
+  "scripts":  {
+     "start": "node server.js",
+     "postinstall": "gulp"
+    },
   "dependencies": {
     "body-parser": "^1.4.3",
     "crypto": "0.0.3",
