@@ -1,4 +1,4 @@
-  // The main application script, ties everything together.
+  // The main application script, ties everything together. a
 
 var express = require('express');
 var mongoose = require('mongoose');
