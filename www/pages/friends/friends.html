@@ -4,18 +4,6 @@
     </button>
   </ion-nav-buttons>
   <ion-content>
-<!-- 	<div class="row">
-		<h1 class="col col-100" style="text-align: center">Yo Friends </h1>
-  </div> -->
- <!--  <div class="row">
-    <h3 class="col col-100" style="text-align: left">{{data.user}}'s friends:</h3>
-  </div> -->
-
-<!--  This list will eventually include all friends from Facebook.
-      The list will have friends with the app listed first.
-      Users will be able to start a game with other friends who have the app.
-      Users will be able to invite friends who don't have the app to download Yo Banfa.
--->
   <ion-list>
 
     <ion-item ng-repeat='friend in data.friends' style="background: transparent">
@@ -37,33 +25,5 @@
     </ion-item>
   </ion-list>
 
-  <!-- for testing -->
-<!--    <ion-list>-->
-
-<!--    <ion-item style="background: transparent">-->
-      <!-- <p clas>Back off, man. I'm {{friend}}.</p> -->
-<!--      <div class="row friendsRow">-->
-<!--        <div class="col col-10">-->
-<!--         replace this with http://graph.facebook.com/userfacebookidhere/picture?type=small -->
-<!--          <img src="pages/friends/Mike.jpg">-->
-<!--        </div>-->
-<!--        <div class="col col-50 center">-->
-<!--          <h2>Pierre Curie</h2>-->
-<!--        </div>-->
-<!--        <div class="col col-30 startButtons">-->
-<!--          <button class="button button-block button-calm" ng-click="toGame()">-->
-<!--            Start game-->
-<!--          </button>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </ion-item>-->
-<!--  </ion-list>-->
-
-<!-- Get friends from database
-
-  <input ng-model='searchFilter.title' type='input'>
-    <li class='link' ng-repeat='friend in data.friends | filter:searchFilter'> friend: {{friend}}<div></div></li>
-
--->
   </ion-content>
 </ion-view>
