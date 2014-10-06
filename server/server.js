@@ -5,6 +5,8 @@ var mongoose = require('mongoose');
 var mongo = require('mongodb');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var Analytics = require('analytics-node');
+var analytics = new Analytics('L9Wl2ujsP1');
 
 var app = express();
 app.use(passport.initialize());
